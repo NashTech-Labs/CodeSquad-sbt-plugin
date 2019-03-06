@@ -6,7 +6,7 @@ crossScalaVersions := Vector("2.11.7","2.12.8")
 
 scalacOptions := Seq("-deprecation", "-unchecked")
 
-organization := "io.github.knoldus"
+ThisBuild / organization := "io.github.knoldus"
 
 name := "codesquad-sbt-plugin"
 
@@ -22,7 +22,7 @@ credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential")
 
 ThisBuild / organizationHomepage := Some(url("https://www.knoldus.com/home.knol"))
 
-ThisBuild / libraryDependencies += "com.typesafe" % "config" % "1.3.3"
+ThisBuild / libraryDependencies ++= Seq("com.typesafe" % "config" % "1.3.3", "org.scala-lang.modules" %% "scala-parser-combinators" % "1.1.1")
 
 ThisBuild / scmInfo := Some(
   ScmInfo(

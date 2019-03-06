@@ -10,7 +10,7 @@ object CodeSquad extends AutoPlugin {
 
   lazy val codesquad = inputKey[Unit]("Run uploadReport on your code")
 
-  val route = "http://18.221.78.85:8080/add/reports"
+  val route = "http://52.15.45.40:8080/add/reports"
 
   val runReportsAndGetRegistrationKey = taskKey[String]("generate all configured reports and return registration key.")
 
@@ -46,6 +46,9 @@ object CodeSquad extends AutoPlugin {
         val sCoverageFile = targetValue + s"/$scalaVersionValue/scoverage-report/scoverage.xml"
         uploadReport(sCoverageFile, organizationValue, projectValue, moduleValue, registrationKey)
 
+        val loc = targetValue + s"/$moduleValue.log"
+        uploadReport(loc, organizationValue, projectValue, moduleValue, registrationKey)
+
       })
 
   override def projectSettings: Seq[sbt.Def.Setting[_]] = rawUploadReportSettings()
@@ -60,17 +63,21 @@ object CodeSquad extends AutoPlugin {
       if (path.exists()) {
         val config = ConfigFactory.parseFile(path)
         val codesquadReports = config.getStringList("codesquad.reports").toList
+
         if (codesquadReports.contains("clean coverage test coverageReport"))
-          Seq(s"sbt", "clean", "coverage", "test", "coverageReport").!
+          Seq("sbt", "clean", "coverage", "test", "coverageReport").!
 
         if (codesquadReports.contains("scalastyle"))
           Seq("sbt", "scalastyle").!
 
         if (codesquadReports.contains("scapegoat"))
-          Seq(s"sbt", "scapegoat").!
+          Seq("sbt", "scapegoat").!
 
         if (codesquadReports.contains("cpd"))
-          Seq(s"sbt", "cpd").!
+          Seq("sbt", "cpd").!
+
+        if(codesquadReports.contains("loc"))
+          Seq("./lineOfCode.sh").!
 
         config.getString("codesquad.registrationKey")
       } else {
