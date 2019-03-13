@@ -8,7 +8,7 @@ import scala.sys.process._
 
 object CodeSquad extends AutoPlugin {
 
-  lazy val codesquad = inputKey[Unit]("Run uploadReport on your code")
+  lazy val codesquad = inputKey[Unit]("Run to upload Report's in CodeSquad.")
 
   val route = "http://52.15.45.40:8080/add/reports"
 
@@ -64,7 +64,7 @@ object CodeSquad extends AutoPlugin {
         val config = ConfigFactory.parseFile(path)
         val codesquadReports = config.getStringList("codesquad.reports").toList
 
-        if (codesquadReports.contains("clean coverage test coverageReport"))
+        if (codesquadReports.contains("coverageReport"))
           Seq("sbt", "clean", "coverage", "test", "coverageReport").!
 
         if (codesquadReports.contains("scalastyle"))
@@ -81,7 +81,7 @@ object CodeSquad extends AutoPlugin {
 
         config.getString("codesquad.registrationKey")
       } else {
-        throw new Exception("Please add .codesquad.conf file in baseDirectory of project.")
+        throw new Exception("Please add .codesquad.conf file in project's baseDirectory.")
       }
     }
   )

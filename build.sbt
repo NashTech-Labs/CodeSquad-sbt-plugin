@@ -12,7 +12,7 @@ name := "codesquad-sbt-plugin"
 
 publishMavenStyle := true
 
-version := "0.0.2"
+version := "0.0.3"
 
 resolvers += "sonatype-snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
 
