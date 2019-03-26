@@ -1,9 +1,18 @@
-lazy val root = (project in file("."))
-  .settings(
-    name := "codesquad",
-    organization := "com.knoldus",
-    version := "0.1",
-    scalaVersion := "2.12.8",
-    sbtPlugin := true,
-    scriptedBufferLog := false
-  )
+sbtPlugin := true
+
+version := "0.0.5"
+
+scalaVersion := "2.12.6"
+
+updateOptions := updateOptions.value.withCachedResolution(true)
+
+concurrentRestrictions in Global += Tags.limit(Tags.Test, 2)
+
+useGpg := true
+
+credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential")
+
+publishConfiguration := publishConfiguration.value.withOverwrite(true)
+publishLocalConfiguration := publishLocalConfiguration.value.withOverwrite(true)
+
+libraryDependencies ++= Seq("com.typesafe" % "config" % "1.3.3")
