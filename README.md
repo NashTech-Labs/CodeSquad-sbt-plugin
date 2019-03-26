@@ -1,9 +1,9 @@
 # CodeSquad-sbt-plugin
-A CodeSquad sbt plugin to automatic upload code quality report on CodeSquad server. In order to use this pulgin follow the below steps.
+A CodeSquad sbt plugin to automatic upload code quality report on CodeSquad server. In order to use this plugin follow the below steps.
 
 Step 1: In plugins.sbt
 
-addSbtPlugin("io.github.knoldus" %% "codesquad-sbt-plugin" % "0.0.4")
+addSbtPlugin("io.github.knoldus" %% "codesquad-sbt-plugin" % "0.0.5")
 
 Step 2: export registrationKey=......
 
@@ -14,7 +14,7 @@ Step 4:- In .codesquad.conf file
 codesquad
   {
 
-reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad.For loc report file name for shell script should be lineOfCode.sh
+reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad.For loc report file name for shell script should be loc.sh and log file name your moduleName.log
 
 organisationName = "...."
 
