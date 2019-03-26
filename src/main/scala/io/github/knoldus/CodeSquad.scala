@@ -27,7 +27,7 @@ object CodeSquad extends AutoPlugin {
     Seq(
       codesquad := {
         val module: String = moduleName.value
-        val targetValue = target.value
+        val targetValue = (baseDirectory in ThisBuild).value +s"/$module/target"
 
         val (reportsName, organizationName, projectName, registrationKey) = runReport.value
 
@@ -56,8 +56,8 @@ object CodeSquad extends AutoPlugin {
         }
 
         if (reportsName.contains("loc")) {
-          Seq("./lineOfCode.sh").!
-          val loc = targetValue + s"/$module.log"
+          Seq("./loc.sh").!
+          val loc = targetValue + s"/stats.log"
           uploadReport(loc, organizationName, projectName, module, registrationKey)
         }
       })
@@ -71,6 +71,7 @@ object CodeSquad extends AutoPlugin {
   override def buildSettings: Seq[Def.Setting[_]] = Seq(
     runReport := {
       val path = (baseDirectory in ThisBuild).value / ".codesquad.conf"
+
       if (path.exists()) {
         val config = ConfigFactory.parseFile(path)
         val reportsName = config.getStringList("codesquad.reports").toList
