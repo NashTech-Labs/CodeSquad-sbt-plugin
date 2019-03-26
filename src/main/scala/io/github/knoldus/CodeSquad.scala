@@ -27,7 +27,7 @@ object CodeSquad extends AutoPlugin {
     Seq(
       codesquad := {
         val module: String = moduleName.value
-        val targetValue = target.value
+        val targetValue = (baseDirectory in ThisBuild).value +s"/$module/target"
 
         val (reportsName, organizationName, projectName, registrationKey) = runReport.value
 
@@ -56,7 +56,7 @@ object CodeSquad extends AutoPlugin {
         }
 
         if (reportsName.contains("loc")) {
-          Seq("./lineOfCode.sh").!
+          Seq("./loc.sh").!
           val loc = targetValue + s"/$module.log"
           uploadReport(loc, organizationName, projectName, module, registrationKey)
         }
