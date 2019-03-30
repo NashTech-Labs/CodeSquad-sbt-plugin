@@ -5,7 +5,6 @@ import com.typesafe.config.ConfigFactory
 import sbt.Keys._
 import sbt._
 import scala.collection.JavaConversions._
-import scala.sys.process._
 
 object CodeSquad extends AutoPlugin {
 
@@ -13,7 +12,7 @@ object CodeSquad extends AutoPlugin {
 
   val route = "http://52.15.45.40:8080/add/reports"
 
-  val runReport = taskKey[(List[String], String, String, String)]("generate all configured reports.")
+  val runReport = settingKey[(List[String], String, String, String)]("generate all configured reports.")
 
   def uploadReport(file: String, organizationName: String, projectName: String, moduleName: String, registrationKey: String): Unit = {
     if (new File(file).exists())
@@ -28,12 +27,13 @@ object CodeSquad extends AutoPlugin {
       codesquad := {
         val module: String = moduleName.value
         val targetValue = (baseDirectory in ThisBuild).value +s"/$module/target"
+        val scalaVersion1 = s"scala-${scalaVersion.value.substring(0,4)}"
 
         val (reportsName, organizationName, projectName, registrationKey) = runReport.value
 
         if (reportsName.contains("coverageReport")) {
           Seq("sbt", "clean", "coverage", "test", "coverageReport").!
-          val sCoverageFile = targetValue + "/scala-2.12/scoverage-report/scoverage.xml"
+          val sCoverageFile = targetValue + s"/$scalaVersion1/scoverage-report/scoverage.xml"
           uploadReport(sCoverageFile, organizationName, projectName, module, registrationKey)
         }
 
@@ -45,21 +45,28 @@ object CodeSquad extends AutoPlugin {
 
         if (reportsName.contains("scapegoat")) {
           Seq("sbt", "scapegoat").!
-          val scapegoatFile = targetValue + "/scala-2.12/scapegoat-report/scapegoat.xml"
+          val scapegoatFile = targetValue + s"/$scalaVersion1/scapegoat-report/scapegoat.xml"
           uploadReport(scapegoatFile, organizationName, projectName, module, registrationKey)
         }
 
         if (reportsName.contains("cpd")) {
           Seq("sbt", "cpd").!
-          val cpdFile = targetValue + "/scala-2.12/cpd/cpd.xml"
+          val cpdFile = targetValue + s"/$scalaVersion1/cpd/cpd.xml"
           uploadReport(cpdFile, organizationName, projectName, module, registrationKey)
         }
 
-        if (reportsName.contains("loc")) {
-          Seq("./loc.sh").!
-          val loc = targetValue + s"/stats.log"
+        if (reportsName.contains("lineOfCode")) {
+          Seq("./lineOfCode.sh").!
+          val loc = targetValue + s"/$module.log"
           uploadReport(loc, organizationName, projectName, module, registrationKey)
         }
+
+        if (reportsName.contains("loc")) {
+          val loc = targetValue + "/stats.log"
+          uploadReport(loc, organizationName, projectName, module, registrationKey)
+        }
+
+
       })
 
   override def projectSettings: Seq[sbt.Def.Setting[_]] = rawUploadReportSettings()
