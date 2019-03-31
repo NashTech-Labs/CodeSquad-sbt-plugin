@@ -3,7 +3,7 @@ A CodeSquad sbt plugin to automatic upload code quality report on CodeSquad serv
 
 Step 1: In plugins.sbt
 
-addSbtPlugin("io.github.knoldus" %% "codesquad-sbt-plugin" % "0.0.6")
+addSbtPlugin("io.github.knoldus" %% "codesquad-sbt-plugin" % "0.0.5")
 
 Step 2: export registrationKey=......
 
