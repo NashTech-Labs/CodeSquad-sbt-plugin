@@ -1,5 +1,5 @@
 # CodeSquad-sbt-plugin
-A CodeSquad sbt plugin to automatic upload code quality report on CodeSquad server. In order to use this pulgin follow the below steps.
+A CodeSquad sbt plugin to automatic upload code quality report for Single module Project on CodeSquad server. In order to use this pulgin follow the below steps.
 
 Step 1: In plugins.sbt
 
