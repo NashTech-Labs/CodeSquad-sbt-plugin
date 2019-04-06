@@ -1,5 +1,3 @@
-import com.typesafe.sbt.pgp.PgpKeys.{publishLocalSigned, publishSigned, useGpg}
-
 sbtPlugin := true
 
 ThisBuild / organization := "io.github.knoldus"

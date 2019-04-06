@@ -13,7 +13,7 @@ object CodeSquad extends AutoPlugin {
 
   val route = "http://52.15.45.40:8080/add/reports"
 
-  val runReport = taskKey[(List[String], String, String, String)]("generate all configured reports.")
+  val runReport = taskKey[(String, String, String, String)]("generate all configured reports.")
 
   def uploadReport(file: String, organizationName: String, projectName: String, moduleName: String, registrationKey: String): Unit = {
     if (new File(file).exists())
@@ -28,38 +28,23 @@ object CodeSquad extends AutoPlugin {
       codesquad := {
         val module: String = moduleName.value
         val targetValue = (baseDirectory in ThisBuild).value +s"/$module/target"
+        val (scalaV, organizationName, projectName, registrationKey) = runReport.value
 
-        val (reportsName, organizationName, projectName, registrationKey) = runReport.value
-
-        if (reportsName.contains("coverageReport")) {
-          Seq("sbt", "clean", "coverage", "test", "coverageReport").!
-          val sCoverageFile = targetValue + "/scala-2.12/scoverage-report/scoverage.xml"
+          val sCoverageFile = targetValue + s"/$scalaV/scoverage-report/scoverage.xml"
           uploadReport(sCoverageFile, organizationName, projectName, module, registrationKey)
-        }
 
-        if (reportsName.contains("scalastyle")) {
-          Seq("sbt", "scalastyle").!
           val scalaStyleFile = targetValue + "/scalastyle-result.xml"
           uploadReport(scalaStyleFile, organizationName, projectName, module, registrationKey)
-        }
 
-        if (reportsName.contains("scapegoat")) {
-          Seq("sbt", "scapegoat").!
-          val scapegoatFile = targetValue + "/scala-2.12/scapegoat-report/scapegoat.xml"
+          val scapegoatFile = targetValue + s"/$scalaV/scapegoat-report/scapegoat.xml"
           uploadReport(scapegoatFile, organizationName, projectName, module, registrationKey)
-        }
 
-        if (reportsName.contains("cpd")) {
-          Seq("sbt", "cpd").!
-          val cpdFile = targetValue + "/scala-2.12/cpd/cpd.xml"
+          val cpdFile = targetValue + s"/$scalaV/cpd/cpd.xml"
           uploadReport(cpdFile, organizationName, projectName, module, registrationKey)
-        }
 
-        if (reportsName.contains("loc")) {
-          Seq("./loc.sh").!
           val loc = targetValue + s"/$module.log"
           uploadReport(loc, organizationName, projectName, module, registrationKey)
-        }
+
       })
 
   override def projectSettings: Seq[sbt.Def.Setting[_]] = rawUploadReportSettings()
@@ -85,7 +70,19 @@ object CodeSquad extends AutoPlugin {
         if (organisationName == null || projectName == null)
           throw new NullPointerException("Please add organisationName and projectName in .codesquad.conf file.")
 
-        (reportsName, organisationName, projectName, registrationKey)
+        val scalaV = s"scala-${scalaVersion.value.substring(0,4)}"
+
+        if (reportsName.contains("coverageReport")) Seq("sbt", "clean", "coverage", "test", "coverageReport").!
+
+        if (reportsName.contains("scalastyle")) Seq("sbt", "scalastyle").!
+
+        if (reportsName.contains("scapegoat")) Seq("sbt", "scapegoat").!
+
+        if (reportsName.contains("cpd")) Seq("sbt", "cpd").!
+
+        if (reportsName.contains("loc")) Seq("./loc.sh").!
+
+        (scalaV, organisationName, projectName, registrationKey)
 
       } else {
         throw new FileNotFoundException("Please add .codesquad.conf file in project's baseDirectory.")

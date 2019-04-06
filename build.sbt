@@ -1,8 +1,8 @@
 sbtPlugin := true
 
-version := "0.0.5"
+version := "0.0.6"
 
-scalaVersion := "2.12.6"
+scalaVersion := "2.12.8"
 
 updateOptions := updateOptions.value.withCachedResolution(true)
 
