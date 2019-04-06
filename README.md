@@ -14,7 +14,8 @@ Step 4:- In .codesquad.conf file
 codesquad
   {
 
-reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad.For loc report file name for shell script should be loc.sh and log file name your moduleName.log
+reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad.
+For loc report file name for shell script should be loc.sh and log file name should be your moduleName.log
 
 organisationName = "...."
 
