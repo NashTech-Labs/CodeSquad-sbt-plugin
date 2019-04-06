@@ -7,7 +7,7 @@ name := "codesquad-sbt-plugin"
 publishMavenStyle := true
 
 
-version := "0.1.0"
+version := "0.1.6"
 
 scalaVersion := "2.10.4"
 
