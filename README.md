@@ -1,9 +1,9 @@
-# CodeSquad-sbt-plugin For Scala 2.12
+# CodeSquad-sbt-plugin for sbt 1.x. // (Scala 2.12)
 A CodeSquad sbt plugin to automatic upload code quality report on CodeSquad server. In order to use this plugin follow the below steps.
 
 Step 1: In plugins.sbt
 
-addSbtPlugin("io.github.knoldus" %% "codesquad-sbt-plugin" % "0.0.6")
+addSbtPlugin("io.github.knoldus" %% "codesquad-sbt-plugin" % "0.2.0")
 
 Step 2: export registrationKey=......
 
@@ -27,7 +27,7 @@ Step 5:- sbt codesquad  // Run to upload reports in codesquad.
 
 
 
-# CodeSquad-sbt-plugin  For Scala 2.11 and Scala 2.10
+# CodeSquad-sbt-plugin for sbt 0.13. // (Scala 2.10 and Scala 2.11)
 
 A CodeSquad sbt plugin to automatic upload code quality report on CodeSquad server. In order to use this plugin follow the below steps.
 
