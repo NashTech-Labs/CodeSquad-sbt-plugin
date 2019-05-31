@@ -11,35 +11,65 @@ object CodeSquad extends AutoPlugin {
   lazy val codesquad = inputKey[Unit]("Run to upload Report's in CodeSquad.")
 
   val route = "http://52.15.45.40:8080/add/reports"
+  val scoveragePath = "/scoverage-report/scoverage.xml"
+  val cpdPath = "/cpd/cpd.xml"
+  val scalalstylePath = "/scalastyle-result.xml"
+  val scapegoatPath = "/scapegoat-report/scapegoat.xml"
 
   val runReport = taskKey[(String, String, String, String)]("generate all configured reports.")
 
   def uploadReport(file: String, organizationName: String, projectName: String, moduleName: String, registrationKey: String): Unit = {
-    if (new File(file).exists())
+    if (getFile(file).exists())
       Seq("curl", "-X", "PUT", "-F", "projectName=" + projectName, "-F", "registrationKey=" + registrationKey, "-F",
         "moduleName=" + moduleName, "-F", "organisation=" + organizationName, "-F",
         "file=@" + file, route).!
   }
 
+  def getFile(file: String): File = new File(file)
 
   def rawUploadReportSettings(): Seq[sbt.Def.Setting[_]] =
     Seq(
       codesquad := {
         val module: String = moduleName.value
+
         val targetValue = (baseDirectory in ThisBuild).value +s"/$module/target"
         val (scalaV, organizationName, projectName, registrationKey) = runReport.value
 
-        val sCoverageFile = targetValue + s"/$scalaV/scoverage-report/scoverage.xml"
-        uploadReport(sCoverageFile, organizationName, projectName, module, registrationKey)
+        val sCoverageFile = targetValue + s"/$scalaV$scoveragePath"
 
-        val scalaStyleFile = targetValue + "/scalastyle-result.xml"
-        uploadReport(scalaStyleFile, organizationName, projectName, module, registrationKey)
+        if(getFile(sCoverageFile).exists()) {
+          uploadReport(sCoverageFile, organizationName, projectName, module, registrationKey)
+        } else {
+          val sCoverageFile = targetValue + scoveragePath
+          uploadReport(sCoverageFile, organizationName, projectName, module, registrationKey)
+        }
 
-        val scapegoatFile = targetValue + s"/$scalaV/scapegoat-report/scapegoat.xml"
-        uploadReport(scapegoatFile, organizationName, projectName, module, registrationKey)
+        val scalaStyleFile = targetValue + s"/$scalaV$scalalstylePath"
 
-        val cpdFile = targetValue + s"/$scalaV/cpd/cpd.xml"
-        uploadReport(cpdFile, organizationName, projectName, module, registrationKey)
+        if(getFile(scalaStyleFile).exists()) {
+          uploadReport(scalaStyleFile, organizationName, projectName, module, registrationKey)
+        } else {
+          val scalaStyleFile = targetValue + scalalstylePath
+          uploadReport(scalaStyleFile, organizationName, projectName, module, registrationKey)
+        }
+
+        val scapegoatFile = targetValue + s"/$scalaV$scapegoatPath"
+
+        if(getFile(scapegoatFile).exists()) {
+          uploadReport(scapegoatFile, organizationName, projectName, module, registrationKey)
+        } else {
+          val scapegoatFile = targetValue + scapegoatPath
+          uploadReport(scapegoatFile, organizationName, projectName, module, registrationKey)
+        }
+
+        val cpdFile = targetValue + s"/$scalaV$cpdPath"
+
+        if(getFile(cpdFile).exists()) {
+          uploadReport(cpdFile, organizationName, projectName, module, registrationKey)
+        } else {
+          val cpdFile = targetValue + cpdPath
+          uploadReport(cpdFile, organizationName, projectName, module, registrationKey)
+        }
 
         val loc = targetValue + s"/$module.log"
         uploadReport(loc, organizationName, projectName, module, registrationKey)
