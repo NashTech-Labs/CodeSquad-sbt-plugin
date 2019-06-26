@@ -6,8 +6,7 @@ name := "codesquad-sbt-plugin"
 
 publishMavenStyle := true
 
-
-version := "0.1.6"
+version := "0.1.8"
 
 scalaVersion := "2.10.4"
 
@@ -19,7 +18,7 @@ credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credential")
 
 organizationHomepage := Some(url("https://www.knoldus.com/home.knol"))
 
-useGpg := true
+//useGpg := true
 
 libraryDependencies ++= Seq("com.typesafe" % "config" % "1.3.2")
 

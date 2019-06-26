@@ -3,7 +3,7 @@ A CodeSquad sbt plugin to automatic upload code quality report on CodeSquad serv
 
 Step 1: In plugins.sbt
 
-addSbtPlugin("io.github.knoldus" %% "codesquad-sbt-plugin" % "0.1.6")
+addSbtPlugin("io.github.knoldus" %% "codesquad-sbt-plugin" % "0.1.8")
 
 Step 2: export registrationKey=......
 
@@ -13,7 +13,7 @@ Step 4:- In .codesquad.conf file
 
 codesquad {
 
-reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad. For loc report file name for shell script should be loc.sh and log file location inside target folder with your moduleName.log
+reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad.
 
 organisationName = "...."
 

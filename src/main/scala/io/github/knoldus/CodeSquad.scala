@@ -111,7 +111,7 @@ object CodeSquad extends AutoPlugin {
 
         if (reportsName.contains("cpd")) Seq("sbt", "cpd").!
 
-        if (reportsName.contains("loc")) Seq("bash","loc.sh").!
+        if (reportsName.contains("loc")) Seq("sbt","stats").!
 
         (scalaV, organisationName, projectName, registrationKey)
 
