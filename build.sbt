@@ -1,6 +1,6 @@
 sbtPlugin := true
 
-version := "0.0.6"
+version := "0.2.1"
 
 scalaVersion := "2.12.8"
 

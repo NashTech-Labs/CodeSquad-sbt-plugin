@@ -14,8 +14,8 @@ Step 4:- In .codesquad.conf file
 codesquad
   {
 
-reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad.
-For loc report use plugin:  addSbtPlugin("io.github.knoldus" % "codesquad-loc-plugin" % "0.1.0")
+reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad. For loc report use plugin:   addSbtPlugin("io.github.knoldus" % "codesquad-loc-plugin" % "0.1.0")
+
 
 organisationName = "...."
 
@@ -43,8 +43,8 @@ Step 4:- In .codesquad.conf file
 
 codesquad {
 
-reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad. 
-For loc report use plugin: addSbtPlugin("io.github.knoldus" % "codesquad-loc-plugin" % "0.0.1")
+reports = ["scalastyle","coverageReport","scapegoat","cpd","loc"] // Report's name which you want to upload in codesquad. For loc report use plugin: addSbtPlugin("io.github.knoldus" % "codesquad-loc-plugin" % "0.0.1")
+
 
 organisationName = "...."
 
